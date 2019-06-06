@@ -8,5 +8,6 @@ public class HelloWorld {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 		String name = bufferedReader.readLine();
 		System.out.println("Hello "+ name);
+		System.out.println("Bye "+ name);
     }
 }
