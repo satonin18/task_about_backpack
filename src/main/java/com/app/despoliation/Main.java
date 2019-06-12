@@ -15,9 +15,6 @@ public class Main {
 
     static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
 
-    private static List<Thread> listOwnerThreads = new ArrayList<>(NUMBER_OWNERS);
-    private static List<Thread> listThiefThreads = new ArrayList<>(NUMBER_THIEFS);
-
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
 
@@ -25,15 +22,13 @@ public class Main {
         setListOwnerThreads();
         setListThiefThreads();
 
-        //bad_StartAllThreads();
-        //bad_joinAll();
-
         // + can: Callable<Object> c = Executors.callable(RunnableImpl);
         List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_OWNERS + NUMBER_THIEFS);
         listCallable.addAll(listThief);
         listCallable.addAll(listOwner);
 
         ExecutorService service = Executors.newCachedThreadPool();
+        //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<Object>> futures = service.invokeAll(listCallable);
 //        for (Future<Object> future : futures) {
 //            try {
@@ -68,23 +63,6 @@ public class Main {
             Thief thief = new Thief(new Backpack((int) (Math.random() * 10_000)));
 
             listThief.add(thief);
-        }
-    }
-
-    private static void bad_StartAllThreads() {
-        for (int i=0; i< listOwnerThreads.size(); i++) {
-            listOwnerThreads.get(i).start();
-        }
-        for (int i=0; i< listThiefThreads.size(); i++) {
-            listThiefThreads.get(i).start();
-        }
-    }
-    private static void bad_joinAll() throws InterruptedException {
-        for (int i=0; i< listOwnerThreads.size(); i++) {
-            listOwnerThreads.get(i).join();
-        }
-        for (int i=0; i< listThiefThreads.size(); i++) {
-            listThiefThreads.get(i).join();
         }
     }
 
