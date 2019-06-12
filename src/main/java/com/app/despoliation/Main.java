@@ -12,6 +12,7 @@ public class Main {
 
     static final int NUMBER_OWNERS = 10;
     static final int NUMBER_THIEFS = 20;
+    static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
 
     static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
 
@@ -23,21 +24,15 @@ public class Main {
         setListThiefThreads();
 
         // + can: Callable<Object> c = Executors.callable(RunnableImpl);
-        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_OWNERS + NUMBER_THIEFS);
+        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
         listCallable.addAll(listThief);
         listCallable.addAll(listOwner);
 
         ExecutorService service = Executors.newCachedThreadPool();
         //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<Object>> futures = service.invokeAll(listCallable);
-//        for (Future<Object> future : futures) {
-//            try {
-//                future.get();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//            }
-//        }
         service.shutdown();
+
 
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
