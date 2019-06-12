@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backpack  {
-    private List<Thing> thingsFromBackpack = new ArrayList<>();
+    private List<Thing> things = new ArrayList<>();
     private int weightLimit;
     private int thisWeight = 0;
 
@@ -15,7 +15,7 @@ public class Backpack  {
     }
 
     public List<Thing> getThings() {
-        return thingsFromBackpack;
+        return things;
     }
 
     public int getWeightLimit() {
@@ -24,7 +24,7 @@ public class Backpack  {
 
     public boolean tryAdd(Thing thing) {
         if( thing.getWeight() <= weightLimit) {
-            thingsFromBackpack.add(thing);
+            this.things.add(thing);
             thisWeight += thing.getWeight() ;
             return true;
         }
@@ -37,7 +37,7 @@ public class Backpack  {
              weightNewThings += th.getWeight();
         }
         if( weightNewThings <= weightLimit) {
-            thingsFromBackpack.addAll(things);
+            this.things.addAll(things);
             thisWeight += weightNewThings;
             return true;
         }
@@ -46,11 +46,11 @@ public class Backpack  {
     }
 
     public void removeAll() {
-        thingsFromBackpack.clear();
+        things.clear();
         thisWeight = 0;
     }
 
     public int size() {
-        return thingsFromBackpack.size();
+        return things.size();
     }
 }

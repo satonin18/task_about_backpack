@@ -50,8 +50,6 @@ public class Thief implements Runnable {
             System.out.print("<--");System.out.println(Thread.currentThread().getName());
             Flat.getLock4thief().unlock();
         }
-
-        Main.totalThingsAfterRun += backpack.size();
     }
 
     private List<Thing> findOptimalThings4Backpack(List<Thing> things) {
