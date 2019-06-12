@@ -29,6 +29,7 @@ public class Main {
         listCallable.addAll(listThief);
         listCallable.addAll(listOwner);
         Collections.shuffle(listCallable);
+        // можно еще обернуть все потоки декоратором в начале которого будет стоять защелка на TOTAL_THINGS_IN_APP
 
         ExecutorService service = Executors.newCachedThreadPool();
         //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
