@@ -3,14 +3,18 @@ package com.app.despoliation;
 import java.util.Objects;
 
 public class Thing {
+    private String title;
     private int weight;
     private int price;
-    private String title;
 
     public Thing(String title, int weight, int price) {
-        this.title = title;
-        this.weight = (weight <= 0) ? 1 : weight;
-        this.price = price;
+        setTitle(title);
+        setWeight(weight);
+        setPrice(price);
+    }
+
+    public Thing(int weight, int price) {
+        this("", weight, price);
     }
 
     public String getTitle() {
@@ -25,21 +29,24 @@ public class Thing {
         return price;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void setWeight(int weight) {
-        this.weight = weight;
+        this.weight = (weight <= 0) ? 1 : weight;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.price = (price <= 0) ? 0 : price;
     }
 
     @Override
     public String toString() {
         return "Thing{" +
-                "weight=" + weight +
+                "title='" + title + '\'' +
+                ", weight=" + weight +
                 ", price=" + price +
-                ", title='" + title + '\'' +
                 '}';
     }
-
 }

@@ -1,4 +1,4 @@
-package com.app.despoliation.prototype.semaphore;
+package prototype.semaphore;
 
 import java.util.concurrent.Semaphore;
 

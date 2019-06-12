@@ -2,7 +2,6 @@ package com.app.despoliation;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -11,11 +10,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class Flat {
     private static Flat thisFlat = new Flat();
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private static final Lock Lock4master = lock.readLock();
+    private static final Lock Lock4owner = lock.readLock();
     private static final Lock Lock4thief = lock.writeLock();
 
-    public static Lock getLock4master() {
-        return Lock4master;
+    public static Lock getLock4owner() {
+        return Lock4owner;
     }
 
     public static Lock getLock4thief() {
@@ -59,5 +58,9 @@ public class Flat {
         //System.out.println("    Flat: removeAll");
         //for (Thing th : findedThief) { System.out.println("    "+th); }
         things.removeAll(findedThief);
+    }
+
+    public int size() {
+        return things.size();
     }
 }

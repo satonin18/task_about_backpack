@@ -1,10 +1,12 @@
-package com.app.despoliation;
+package com.app.despoliation.thief;
 
-import java.util.Collection;
+import com.app.despoliation.Thing;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Backpack  {
-    private List<Thing> things;
+    private List<Thing> thingsFromBackpack = new ArrayList<>();
     private int weightLimit;
     private int thisWeight = 0;
 
@@ -13,7 +15,7 @@ public class Backpack  {
     }
 
     public List<Thing> getThings() {
-        return things;
+        return thingsFromBackpack;
     }
 
     public int getWeightLimit() {
@@ -22,7 +24,7 @@ public class Backpack  {
 
     public boolean tryAdd(Thing thing) {
         if( thing.getWeight() <= weightLimit) {
-            things.add(thing);
+            thingsFromBackpack.add(thing);
             thisWeight += thing.getWeight() ;
             return true;
         }
@@ -35,15 +37,20 @@ public class Backpack  {
              weightNewThings += th.getWeight();
         }
         if( weightNewThings <= weightLimit) {
-            things.addAll(things);
+            thingsFromBackpack.addAll(things);
             thisWeight += weightNewThings;
             return true;
         }
-        else return false;
+        else
+            return false;
     }
 
     public void removeAll() {
-        things = null;
+        thingsFromBackpack.clear();
         thisWeight = 0;
+    }
+
+    public int size() {
+        return thingsFromBackpack.size();
     }
 }

@@ -1,6 +1,6 @@
-package com.app.despoliation.prototype.selection4steal;
+package prototype.selection4steal;
 
-import com.app.despoliation.Backpack;
+import com.app.despoliation.thief.Backpack;
 import com.app.despoliation.Thing;
 
 import java.util.*;

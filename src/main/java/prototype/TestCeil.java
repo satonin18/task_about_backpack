@@ -1,4 +1,4 @@
-package com.app.despoliation.prototype;
+package prototype;
 
 public class TestCeil {
     public static void main(String[] args) throws Exception {
