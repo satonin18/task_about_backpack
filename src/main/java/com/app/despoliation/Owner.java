@@ -1,8 +1,9 @@
 package com.app.despoliation;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class Owner implements Runnable {
+public class Owner implements Callable<Object> {
     private List<Thing> things;
 
     public Owner(List<Thing> things) {
@@ -13,10 +14,11 @@ public class Owner implements Runnable {
         return things;
     }
 
-    public void run() {
+    @Override
+    public Object call() throws Exception {
         try{
             Flat.getLock4owner().lock();
-            System.out.println("+in " + Thread.currentThread().getName());
+            System.out.println("+in Owner with name=" + Thread.currentThread().getName());
 
             while ( ! things.isEmpty()) {
                 Flat.getApartment().add(
@@ -26,8 +28,9 @@ public class Owner implements Runnable {
         }catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
-            System.out.println("-out " + Thread.currentThread().getName());
+            System.out.println("-out Owner with name=" + Thread.currentThread().getName());
             Flat.getLock4owner().unlock();
         }
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

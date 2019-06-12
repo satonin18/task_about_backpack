@@ -5,9 +5,7 @@ import com.app.despoliation.thief.Thief;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class Main {
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
@@ -27,15 +25,27 @@ public class Main {
         setListOwnerThreads();
         setListThiefThreads();
 
-        bad_StartAllThreads();
-        bad_joinAll();
+        //bad_StartAllThreads();
+        //bad_joinAll();
 
-        //ExecutorService service = Executors.newCachedThreadPool();
-        //List<Future<Object>> futures = service.invokeAll();
+        // + can: Callable<Object> c = Executors.callable(RunnableImpl);
+        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_OWNERS + NUMBER_THIEFS);
+        listCallable.addAll(listThief);
+        listCallable.addAll(listOwner);
 
+        ExecutorService service = Executors.newCachedThreadPool();
+        List<Future<Object>> futures = service.invokeAll(listCallable);
+//        for (Future<Object> future : futures) {
+//            try {
+//                future.get();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+//        }
+        service.shutdown();
 
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
-
     }
 
     private static void setListOwnerThreads() {
@@ -50,9 +60,6 @@ public class Main {
             Owner owner = new Owner(listThings);
 
             listOwner.add(owner);
-            listOwnerThreads.add(
-                    new Thread(owner, threadName)
-            );
         }
     }
 
@@ -61,9 +68,6 @@ public class Main {
             Thief thief = new Thief(new Backpack((int) (Math.random() * 10_000)));
 
             listThief.add(thief);
-            listThiefThreads.add(
-                    new Thread(thief, "thief#"+i )
-            );
         }
     }
 

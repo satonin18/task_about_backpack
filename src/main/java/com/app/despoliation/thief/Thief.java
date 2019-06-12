@@ -6,10 +6,11 @@ import com.app.despoliation.Thing;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static com.app.despoliation.Flat.getApartment;
 
-public class Thief implements Runnable {
+public class Thief implements Callable<Object> {
     private Backpack backpack;
 
     public Thief(Backpack backpack) {
@@ -20,10 +21,15 @@ public class Thief implements Runnable {
         return backpack;
     }
 
-    public void run() {
+    private List<Thing> findOptimalThings4Backpack(List<Thing> things) {
+        return SelectionThing4Backpack.select(backpack.getWeightLimit(), things);
+    }
+
+    @Override
+    public Object call() throws Exception {
         try{
             Flat.getLock4thief().lock();
-            System.out.print("-->");System.out.println(Thread.currentThread().getName());
+            System.out.println("--> Thief with name="+Thread.currentThread().getName());
             System.out.println("    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
 
             List<Thing> finded = findOptimalThings4Backpack( getApartment().getAll() );
@@ -47,13 +53,11 @@ public class Thief implements Runnable {
         } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
-            System.out.print("<--");System.out.println(Thread.currentThread().getName());
+            System.out.println("<-- Thief with name="+Thread.currentThread().getName());
             Flat.getLock4thief().unlock();
         }
-    }
 
-    private List<Thing> findOptimalThings4Backpack(List<Thing> things) {
-        return SelectionThing4Backpack.select(backpack.getWeightLimit(), things);
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
 
