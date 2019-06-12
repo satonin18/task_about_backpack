@@ -31,7 +31,6 @@ public class Flat {
         this.things = new CopyOnWriteArrayList<>();
     }
 
-    //  TODO MasterS can be in race condition
     public void add(Thing thing) {
         this.things.add(thing);
         //System.out.println("    Flat: add"+thing);
@@ -46,13 +45,6 @@ public class Flat {
         for (Thing th : things) { System.out.println("    "+th); }
         return things;
     }
-
-    //todo more effective can be
-   /* public Iterator<Thing> getIterator() {
-        System.out.println("    Flat: Iterator");
-        System.out.println(Thread.currentThread().getName());
-        return things.iterator(); // can tryAdd listIterator
-    }*/
 
     public void removeAll(List<Thing> findedThief) {
         //System.out.println("    Flat: removeAll");
