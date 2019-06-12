@@ -4,6 +4,7 @@ import com.app.despoliation.thief.Backpack;
 import com.app.despoliation.thief.Thief;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -14,25 +15,25 @@ public class Main {
     static final int NUMBER_THIEFS = 20;
     static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
 
+    //can be small type data
     static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
 
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
+    private static List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
 
     public static void main(String[] args) throws InterruptedException {
         setListOwnerThreads();
         setListThiefThreads();
 
-        // + can: Callable<Object> c = Executors.callable(RunnableImpl);
-        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
         listCallable.addAll(listThief);
         listCallable.addAll(listOwner);
+        Collections.shuffle(listCallable);
 
         ExecutorService service = Executors.newCachedThreadPool();
         //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<Object>> futures = service.invokeAll(listCallable);
         service.shutdown();
-
 
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
@@ -48,7 +49,6 @@ public class Main {
                 );
             }
             Owner owner = new Owner(listThings);
-
             listOwner.add(owner);
         }
     }
@@ -56,7 +56,6 @@ public class Main {
     private static void setListThiefThreads() {
         for (int i = 0; i< NUMBER_THIEFS; i++) {
             Thief thief = new Thief(new Backpack((int) (Math.random() * 10_000)));
-
             listThief.add(thief);
         }
     }
