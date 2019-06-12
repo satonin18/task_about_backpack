@@ -5,6 +5,9 @@ import com.app.despoliation.thief.Thief;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Main {
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
@@ -20,14 +23,15 @@ public class Main {
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
 
-    public static int totalThingsAfterRun = 0;
-
     public static void main(String[] args) throws InterruptedException {
         setListOwnerThreads();
         setListThiefThreads();
 
         bad_StartAllThreads();
         bad_joinAll();
+
+        //ExecutorService service = Executors.newCachedThreadPool();
+        //List<Future<Object>> futures = service.invokeAll();
 
 
         printTotalThingsAfterRun();
@@ -36,11 +40,18 @@ public class Main {
 
     private static void setListOwnerThreads() {
         for (int i = 0; i< NUMBER_OWNERS; i++) {
-            Owner owner = new Owner();
+            String threadName = "owner#"+i;
+            ArrayList<Thing> listThings = new ArrayList<Thing>(NUMBER_THINGS_ON_ONE_OWNER);
+            for (int iTh = 0; iTh<NUMBER_THINGS_ON_ONE_OWNER; iTh++) {
+                listThings.add(
+                        new Thing("thing#"+iTh+", which owns: "+threadName, (int)(Math.random()*1_000), (int)(Math.random()*1_000) )
+                );
+            }
+            Owner owner = new Owner(listThings);
 
             listOwner.add(owner);
             listOwnerThreads.add(
-                    new Thread(owner ,"owner#"+i)
+                    new Thread(owner, threadName)
             );
         }
     }
@@ -74,14 +85,39 @@ public class Main {
     }
 
     private static void printTotalThingsAfterRun() {
+        int totalThingsAfterRun = 0;
+        int tempCount =0;
+
+        System.out.println();
+        System.out.println("RESULT APP:");
         System.out.println("----------------------------------------------------------");
-        System.out.println("Backpack Thiefs:");
+        System.out.println("Owner things :");
+
+        for (Owner owner: listOwner) {
+            tempCount += owner.getThings().size();
+            System.out.println(owner.getThings().size()
+                    +" "+owner.getThings());
+        }
+        System.out.println("=>Total owner things: "+tempCount);
+
+        totalThingsAfterRun += tempCount;
+        tempCount=0;
+
+        System.out.println("----------------------------------------------------------");
+        System.out.println("Thing in Backpack Thiefs:");
         for (Thief thief: listThief) {
+            tempCount += thief.getBackpack().getThings().size();
             System.out.println(thief.getBackpack().getThings().size()
                     +" "+thief.getBackpack().getThings());
         }
-        System.out.println();
-        System.out.println("Flat: "+ Flat.getApartment().size());
+        System.out.println("=>Total in Backpack Thiefs: "+tempCount);
+
+        totalThingsAfterRun += tempCount;
+        //tempCount=0;
+
+        System.out.println("----------------------------------------------------------");
+        System.out.println("=>Thing in Flat: "+ Flat.getApartment().size());
+
         totalThingsAfterRun += Flat.getApartment().size();
 
         assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
