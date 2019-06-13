@@ -4,7 +4,6 @@ import com.app.despoliation.thief.Backpack;
 import com.app.despoliation.thief.Thief;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -20,27 +19,36 @@ public class Main {
 
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
-    private static List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
+    static CountDownLatch countDownLatch = new CountDownLatch(NUMBER_THREADS);
 
     public static void main(String[] args) throws InterruptedException {
-        setListOwnerThreads();
-        setListThiefThreads();
+        setListOwners();
+        setListThiefs();
 
-        listCallable.addAll(listThief);
-        listCallable.addAll(listOwner);
-        Collections.shuffle(listCallable);
-        // можно еще обернуть все потоки декоратором в начале которого будет стоять защелка на TOTAL_THINGS_IN_APP
+//        // "threads start (artificial) random"
+//        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
+//        listCallable.addAll(listThief);
+//        listCallable.addAll(listOwner);
+//        Collections.shuffle(listCallable);
+
+        ArrayList<SynchronousStartWrapper> listWrappers = new ArrayList<>(NUMBER_THREADS);
+        for (Thief thief: listThief) {
+            listWrappers.add(new SynchronousStartWrapper(thief));
+        }
+        for (Owner owner: listOwner) {
+            listWrappers.add(new SynchronousStartWrapper(owner));
+        }
 
         ExecutorService service = Executors.newCachedThreadPool();
         //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        List<Future<Object>> futures = service.invokeAll(listCallable);
+        List<Future<Object>> futures = service.invokeAll(listWrappers);
         service.shutdown();
 
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
     }
 
-    private static void setListOwnerThreads() {
+    private static void setListOwners() {
         for (int i = 0; i< NUMBER_OWNERS; i++) {
             String threadName = "owner#"+i;
             ArrayList<Thing> listThings = new ArrayList<Thing>(NUMBER_THINGS_ON_ONE_OWNER);
@@ -54,7 +62,7 @@ public class Main {
         }
     }
 
-    private static void setListThiefThreads() {
+    private static void setListThiefs() {
         for (int i = 0; i< NUMBER_THIEFS; i++) {
             Thief thief = new Thief(new Backpack((int) (Math.random() * 10_000)));
             listThief.add(thief);
