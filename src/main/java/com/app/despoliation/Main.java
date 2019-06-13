@@ -14,7 +14,7 @@ public class Main {
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
 
     static final int NUMBER_OWNERS = 10;
-    static final int NUMBER_THIEFS = 10;
+    static final int NUMBER_THIEFS = 20;
     static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
 
     //can be small type data
