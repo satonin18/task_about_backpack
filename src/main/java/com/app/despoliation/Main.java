@@ -1,9 +1,12 @@
 package com.app.despoliation;
 
-import com.app.despoliation.thief.Backpack;
-import com.app.despoliation.thief.Thief;
+import com.app.despoliation.threads.thief.Backpack;
+import com.app.despoliation.threads.thief.Thief;
+import com.app.despoliation.threads.owner.Owner;
+import com.app.despoliation.threads.SynchronousStartWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -11,7 +14,7 @@ public class Main {
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
 
     static final int NUMBER_OWNERS = 10;
-    static final int NUMBER_THIEFS = 20;
+    static final int NUMBER_THIEFS = 10;
     static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
 
     //can be small type data
@@ -19,7 +22,7 @@ public class Main {
 
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
-    static CountDownLatch countDownLatch = new CountDownLatch(NUMBER_THREADS);
+    public static CountDownLatch countDownLatch = new CountDownLatch(NUMBER_THREADS);
 
     public static void main(String[] args) throws InterruptedException {
         setListOwners();
@@ -32,12 +35,13 @@ public class Main {
 //        Collections.shuffle(listCallable);
 
         ArrayList<SynchronousStartWrapper> listWrappers = new ArrayList<>(NUMBER_THREADS);
-        for (Thief thief: listThief) {
-            listWrappers.add(new SynchronousStartWrapper(thief));
-        }
         for (Owner owner: listOwner) {
             listWrappers.add(new SynchronousStartWrapper(owner));
         }
+        for (Thief thief: listThief) {
+            listWrappers.add(new SynchronousStartWrapper(thief));
+        }
+        Collections.shuffle(listWrappers);
 
         ExecutorService service = Executors.newCachedThreadPool();
         //ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());

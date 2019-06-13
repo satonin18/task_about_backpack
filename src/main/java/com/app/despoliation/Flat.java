@@ -41,8 +41,8 @@ public class Flat {
     }
 
     public List<Thing> getAll() {
-        System.out.println("    Flat: getAll");
-        for (Thing th : things) { System.out.println("    "+th); }
+        //System.out.println("    Flat: getAll");
+        //for (Thing th : things) { System.out.println("    "+th); }
         return things;
     }
 
