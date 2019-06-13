@@ -1,6 +1,6 @@
 package prototype.selection4steal;
 
-import com.app.despoliation.thief.Backpack;
+import com.app.despoliation.threads.thief.Backpack;
 import com.app.despoliation.Thing;
 
 import java.util.*;
@@ -68,7 +68,7 @@ public class Prototype2WithThings {
         }
         //int[][] mas  = new int[LINES][COLUMNS];
         List<List<Thing>> currentLine = new ArrayList<List<Thing>>(COLUMNS);
-        List<List<Thing>> pastLine = null; //for first iter - going other algoritm
+        List<List<Thing>> pastLine = null; //for first iter - going prototype.other algoritm
         //ITER ---------------------------------------------------------
         for (int indexThing = 0; indexThing < LINES; indexThing++) {
             pastLine = currentLine;

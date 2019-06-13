@@ -1,8 +1,8 @@
 package prototype.selection4steal;
 
-import com.app.despoliation.thief.Backpack;
+import com.app.despoliation.threads.thief.Backpack;
 import com.app.despoliation.Thing;
-import com.app.despoliation.thief.SelectionThing4Backpack;
+import com.app.despoliation.threads.thief.SelectionThing4Backpack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +57,7 @@ public class DickardedSelectionThing4Backpack {
             return Collections.EMPTY_LIST;
         }
         List<List<Thing>> currentLine = new ArrayList<List<Thing>>(COLUMNS);
-        List<List<Thing>> pastLine = null; //for first iter - going other algoritm
+        List<List<Thing>> pastLine = null; //for first iter - going prototype.other algoritm
 
         for (int indexThing = 0; indexThing < LINES; indexThing++) {
             pastLine = currentLine;
