@@ -108,7 +108,8 @@ public class Main {
         assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
 
         System.out.println("----------------------------------------------------------");
-        System.out.println("Total: "+totalThingsAfterRun);
+        System.out.println("Things were: "+TOTAL_THINGS_IN_APP);
+        System.out.println("New, total: "+totalThingsAfterRun);
     }
 
 }
