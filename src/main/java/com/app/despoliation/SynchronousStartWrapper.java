@@ -17,27 +17,28 @@ public class SynchronousStartWrapper  implements Callable<Object> {
     @Override
     public Object call() throws Exception {
         //new approach
-        //Main.countDownLatch.countDown();
+        Main.countDownLatch.countDown();
 
         // old approach
-        synchronized (SynchronousStartWrapper.class){
-            count++;
-            System.out.println(count);
-
-            if(count == Main.NUMBER_THREADS){
-                System.out.println("*-*-*-*--*-*---*-*--*-**-**-*-*-*");
-                SynchronousStartWrapper.class.notifyAll();
-                System.out.println("I say everybody, notifyAll");
-
-            }else {
-                while (count != Main.NUMBER_THREADS){
-                    System.out.println("wait");
-                    SynchronousStartWrapper.class.wait();
-                    System.out.println("after wait");
-
-                }
-            }
-        }
+        // BAD ORDER
+//        synchronized (SynchronousStartWrapper.class){
+//            count++;
+//            System.out.println(count);
+//
+//            if(count == Main.NUMBER_THREADS){
+//                System.out.println("*-*-*-*--*-*---*-*--*-**-**-*-*-*");
+//                SynchronousStartWrapper.class.notifyAll();
+//                System.out.println("I say everybody, notifyAll");
+//
+//            }else {
+//                while (count != Main.NUMBER_THREADS){
+//                    System.out.println("wait");
+//                    SynchronousStartWrapper.class.wait();
+//                    System.out.println("after wait");
+//
+//                }
+//            }
+//        }
         return this.callable.call();
     }
 }
