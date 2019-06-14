@@ -1,6 +1,7 @@
 package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Thing;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class SelectionThing4Backpack {
         final int LINES = things.size();  // THINGS = from 0 to lastThing
 
         if (LINES == 0 || COLUMNS == 0) {
-            logger.debug("    EMPTY_LIST, NOTHING STEAL");
+            logger.log(Level.DEBUG,"    EMPTY_LIST, NOTHING STEAL");
             return Collections.EMPTY_LIST;
         }
         List<List<Thing>> currentLine = null;
@@ -58,11 +59,11 @@ public class SelectionThing4Backpack {
                 } else {
                     thisCell.addAll(sumOf_thisTh_and_free);
                 }
-                logger.debug(thisCell + "\t");
+                logger.log(Level.DEBUG,thisCell + "\t");
             }
-            logger.debug(currentLine.get(COLUMNS-1));
+            logger.log(Level.DEBUG,currentLine.get(COLUMNS-1));
         }
-        logger.debug(System.lineSeparator());
+        logger.log(Level.DEBUG,System.lineSeparator());
 
         List<Thing> cell = currentLine.get(COLUMNS-1);
         if(cell.isEmpty()) {  return Collections.EMPTY_LIST;}

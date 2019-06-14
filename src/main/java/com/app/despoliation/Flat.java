@@ -1,5 +1,6 @@
 package com.app.despoliation;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +40,7 @@ public class Flat {
 
     public void add(Thing thing) {
         this.things.add(thing);
-        logger.debug("    Flat: add" + thing);
+        logger.log(Level.DEBUG,"    Flat: add" + thing);
     }
 
     public void addAll(List<Thing> things) {
@@ -47,14 +48,14 @@ public class Flat {
     }
 
     public List<Thing> getAll() {
-        logger.debug("    Flat: getAll");
-        logger.debug("    " + things);
+        logger.log(Level.DEBUG,"    Flat: getAll");
+        logger.log(Level.DEBUG,"    " + things);
         return things;
     }
 
     public void removeAll(List<Thing> findedThief) {
-        logger.debug("    Flat: removeAll");
-        logger.debug("    " + findedThief);
+        logger.log(Level.DEBUG,"    Flat: removeAll");
+        logger.log(Level.DEBUG,"    " + findedThief);
         things.removeAll(findedThief);
     }
 

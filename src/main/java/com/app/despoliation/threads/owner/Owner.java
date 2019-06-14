@@ -2,6 +2,7 @@ package com.app.despoliation.threads.owner;
 
 import com.app.despoliation.Flat;
 import com.app.despoliation.Thing;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class Owner implements Callable<Object> {
     public Object call() throws Exception {
         try{
             Flat.getLock4owner().lock();
-            logger.info("+in Owner with name=" + Thread.currentThread().getName());
+            logger.log(Level.INFO,"+in Owner with name=" + Thread.currentThread().getName());
 
             while ( ! things.isEmpty()) {
                 Flat.getApartment().add(
@@ -36,7 +37,7 @@ public class Owner implements Callable<Object> {
         }catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
-            logger.info("-out Owner with name=" + Thread.currentThread().getName());
+            logger.log(Level.INFO,"-out Owner with name=" + Thread.currentThread().getName());
             Flat.getLock4owner().unlock();
         }
         return null;

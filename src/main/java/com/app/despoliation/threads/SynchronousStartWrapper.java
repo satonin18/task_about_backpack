@@ -29,18 +29,18 @@ public class SynchronousStartWrapper  implements Callable<Object> {
         // BAD ORDER
 //        synchronized (SynchronousStartWrapper.class){
 //            count++;
-//            logger.debug(count);
+//            logger.log(Level.DEBUG,count);
 //
 //            if(count == Main.NUMBER_THREADS){
-//                logger.debug("*-*-*-*--*-*---*-*--*-**-**-*-*-*");
+//                logger.log(Level.DEBUG,"*-*-*-*--*-*---*-*--*-**-**-*-*-*");
 //                SynchronousStartWrapper.class.notifyAll();
-//                logger.debug("I say everybody, notifyAll");
+//                logger.log(Level.DEBUG,"I say everybody, notifyAll");
 //
 //            }else {
 //                while (count != Main.NUMBER_THREADS){
-//                    logger.debug("wait");
+//                    logger.log(Level.DEBUG,"wait");
 //                    SynchronousStartWrapper.class.wait();
-//                    logger.debug("after wait");
+//                    logger.log(Level.DEBUG,"after wait");
 //
 //                }
 //            }

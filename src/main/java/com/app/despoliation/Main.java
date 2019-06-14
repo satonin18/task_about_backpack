@@ -6,6 +6,7 @@ import com.app.despoliation.threads.owner.Owner;
 import com.app.despoliation.threads.SynchronousStartWrapper;
 
 //import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -56,7 +57,7 @@ public class Main {
         List<Future<Object>> futures = service.invokeAll(listWrappers);
         service.shutdown();
 
-        logger.info("++++++++++++++++++++++++++++++++++++++++++++++");
+        logger.log(Level.INFO,"++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
     }
 
@@ -85,42 +86,42 @@ public class Main {
         int totalThingsAfterRun = 0;
         int tempCount =0;
 
-        logger.info("RESULT APP:");
-        logger.info("----------------------------------------------------------");
-        logger.info("Owner things :");
+        logger.log(Level.INFO,"RESULT APP:");
+        logger.log(Level.INFO,"----------------------------------------------------------");
+        logger.log(Level.INFO,"Owner things :");
 
         for (Owner owner: listOwner) {
             tempCount += owner.getThings().size();
-            logger.info(owner.getThings().size()
+            logger.log(Level.INFO,owner.getThings().size()
                     +" "+owner.getThings());
         }
-        logger.info("=>Total owner things: "+tempCount);
+        logger.log(Level.INFO,"=>Total owner things: "+tempCount);
 
         totalThingsAfterRun += tempCount;
         tempCount=0;
 
-        logger.info("----------------------------------------------------------");
-        logger.info("Thing in Backpack Thiefs:");
+        logger.log(Level.INFO,"----------------------------------------------------------");
+        logger.log(Level.INFO,"Thing in Backpack Thiefs:");
         for (Thief thief: listThief) {
             tempCount += thief.getBackpack().getThings().size();
-            logger.info(thief.getBackpack().getThings().size()
+            logger.log(Level.INFO,thief.getBackpack().getThings().size()
                     +" "+thief.getBackpack().getThings());
         }
-        logger.info("=>Total in Backpack Thiefs: "+tempCount);
+        logger.log(Level.INFO,"=>Total in Backpack Thiefs: "+tempCount);
 
         totalThingsAfterRun += tempCount;
         //tempCount=0;
 
-        logger.info("----------------------------------------------------------");
-        logger.info("=>Thing in Flat: "+ Flat.getApartment().size());
+        logger.log(Level.INFO,"----------------------------------------------------------");
+        logger.log(Level.INFO,"=>Thing in Flat: "+ Flat.getApartment().size());
 
         totalThingsAfterRun += Flat.getApartment().size();
 
         assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
 
-        logger.info("----------------------------------------------------------");
-        logger.info("Things were: "+TOTAL_THINGS_IN_APP);
-        logger.info("New, total: "+totalThingsAfterRun);
+        logger.log(Level.INFO,"----------------------------------------------------------");
+        logger.log(Level.INFO,"Things were: "+TOTAL_THINGS_IN_APP);
+        logger.log(Level.INFO,"New, total: "+totalThingsAfterRun);
     }
 
 }

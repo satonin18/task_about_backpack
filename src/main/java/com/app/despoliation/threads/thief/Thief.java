@@ -2,6 +2,7 @@ package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Flat;
 import com.app.despoliation.Thing;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,30 +33,30 @@ public class Thief implements Callable<Object> {
     public Object call() throws Exception {
         try{
             Flat.getLock4thief().lock();
-            logger.info("--> Thief with name="+Thread.currentThread().getName());
-            logger.debug("    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
+            logger.log(Level.INFO,"--> Thief with name="+Thread.currentThread().getName());
+            logger.log(Level.DEBUG,"    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
 
             List<Thing> finded = findOptimalThings4Backpack( getApartment().getAll() );
 
             if( finded.isEmpty()) {
-                logger.debug("    "+"do not findED thing, which place in backpack");
+                logger.log(Level.DEBUG,"    "+"do not findED thing, which place in backpack");
             }
             else {
-                logger.debug("Thief stole next things: ");
-                logger.debug("    "+finded);
+                logger.log(Level.DEBUG,"Thief stole next things: ");
+                logger.log(Level.DEBUG,"    "+finded);
 
                 boolean addedThings = backpack.tryAddAll(finded);
                 assert ( ! addedThings ) : "logic separated in  backpack and thief";
 
-                logger.debug(addedThings);
-                logger.debug(backpack.size());
+                logger.log(Level.DEBUG,addedThings);
+                logger.log(Level.DEBUG,backpack.size());
 
                 getApartment().removeAll(finded);
             }
         } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
-            logger.info("<-- Thief with name="+Thread.currentThread().getName());
+            logger.log(Level.INFO,"<-- Thief with name="+Thread.currentThread().getName());
             Flat.getLock4thief().unlock();
         }
 
