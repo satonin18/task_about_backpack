@@ -6,13 +6,14 @@ import com.app.despoliation.threads.owner.Owner;
 import com.app.despoliation.threads.SynchronousStartWrapper;
 import org.apache.log4j.Logger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
-    private static final Logger logger = Logger.getLogger(Main.class); //String Full-Name
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
 
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
 

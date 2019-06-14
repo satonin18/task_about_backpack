@@ -3,6 +3,7 @@ package com.app.despoliation.threads.thief;
 import com.app.despoliation.Thing;
 import org.apache.log4j.Logger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  *
  */
 public class SelectionThing4Backpack {
-    private static final Logger logger = Logger.getLogger(SelectionThing4Backpack.class); //String Full-Name
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
 
     public static List<Thing> select(int maxLimitedThing, List<Thing> things) {
         final int COLUMNS = maxLimitedThing;  // COLUMNS = from 0 to WEIGHT-1

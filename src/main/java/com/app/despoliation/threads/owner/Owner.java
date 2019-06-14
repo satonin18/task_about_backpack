@@ -4,11 +4,12 @@ import com.app.despoliation.Flat;
 import com.app.despoliation.Thing;
 import org.apache.log4j.Logger;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Owner implements Callable<Object> {
-    private static final Logger logger = Logger.getLogger(Owner.class); //String Full-Name
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
 
     private List<Thing> things;
 
