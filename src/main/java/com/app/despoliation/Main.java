@@ -12,36 +12,58 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.*;
 
 public class Main {
     //private static final Logger log = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
 
-    static final int NUMBER_THINGS_ON_ONE_OWNER = 5; // for test =Integer.MAX_VALUE
+    static int NUMBER_THINGS_ON_ONE_OWNER; // for test =Integer.MAX_VALUE
 
-    static final int NUMBER_OWNERS = 10;
-    static final int NUMBER_THIEFS = 20;
-    static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
+    static int NUMBER_OWNERS;
+    static int NUMBER_THIEFS;
 
-    static final int RANGE_PRICE_THING = 1_000;
-    static final int RANGE_PRICE_WEIGHT = 1_000;
-    static final int RANGE_BACKPACK_LIMIT_WEIGHT = 10_000;
+    static int RANGE_PRICE_THING;
+    static int RANGE_PRICE_WEIGHT;
+    static int RANGE_BACKPACK_LIMIT_WEIGHT;
 
-    static final int TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
     static {
-        if( (long)NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER
-                !=
-                (long)TOTAL_THINGS_IN_APP
-        ) {throw new RuntimeException("APP DO NOT SUCH BIG VAR = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER");}
+        try {
+            initConstFromProperties();
+
+        } catch (IOException e) {
+            log.log(Level.ERROR, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+    static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
+    static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
+
+    private static void initConstFromProperties() throws IOException {
+        Properties props = new Properties();
+        try (InputStream is = new FileInputStream(new File(PATH_TO_PROPERTIES))) {
+            props.load(is);
+
+            NUMBER_THINGS_ON_ONE_OWNER = Integer.parseInt(props.getProperty("NUMBER_THINGS_ON_ONE_OWNER")); // for test =Integer.MAX_VALUE
+
+            NUMBER_OWNERS = Integer.parseInt(props.getProperty("NUMBER_OWNERS"));
+            NUMBER_THIEFS = Integer.parseInt(props.getProperty("NUMBER_THIEFS"));
+
+            RANGE_PRICE_THING = Integer.parseInt(props.getProperty("RANGE_PRICE_THING"));
+            RANGE_PRICE_WEIGHT = Integer.parseInt(props.getProperty("RANGE_PRICE_WEIGHT"));
+            RANGE_BACKPACK_LIMIT_WEIGHT = Integer.parseInt(props.getProperty("RANGE_BACKPACK_LIMIT_WEIGHT"));
+        }
     }
 
-    static List<Thing> listThings_onStartApp = new ArrayList<>(TOTAL_THINGS_IN_APP);
-    static List<Thing> listThings_onEndApp = new ArrayList<>(TOTAL_THINGS_IN_APP);
+    static List<Thing> listThings_onStartApp = new ArrayList<>((int)TOTAL_THINGS_IN_APP);
+    static List<Thing> listThings_onEndApp = new ArrayList<>((int)TOTAL_THINGS_IN_APP);
 
     private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
     private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);

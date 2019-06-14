@@ -14,7 +14,7 @@ public class Backpack  {
 
     private List<Thing> things = new ArrayList<>();
     private int weightLimit;
-    private int thisWeight = 0;
+    private int thisWeight;
 
     public Backpack(int weightLimit) {
         this.weightLimit = (weightLimit<=0) ? 0 : weightLimit;
