@@ -1,4 +1,4 @@
-package prototype.other.logging.jul;
+package prototype.logging.jul;
 //TODO: J.U.L. //VM options:-Djava.util.logging.config.file=C:\JavaRushTasks\4.JavaCollections\src\com\javarush\task\task34\logging\jul\logging.properties
 import java.util.logging.*;
 

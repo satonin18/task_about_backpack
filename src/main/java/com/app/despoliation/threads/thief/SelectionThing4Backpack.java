@@ -1,6 +1,7 @@
 package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Thing;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +15,8 @@ import java.util.List;
  *
  */
 public class SelectionThing4Backpack {
+    private static final Logger logger = Logger.getLogger(SelectionThing4Backpack.class); //String Full-Name
+
     public static List<Thing> select(int maxLimitedThing, List<Thing> things) {
         final int COLUMNS = maxLimitedThing;  // COLUMNS = from 0 to WEIGHT-1
 
@@ -21,7 +24,7 @@ public class SelectionThing4Backpack {
         final int LINES = things.size();  // THINGS = from 0 to lastThing
 
         if (LINES == 0 || COLUMNS == 0) {
-            //System.out.println("    EMPTY_LIST, NOTHING STEAL");
+            logger.debug("    EMPTY_LIST, NOTHING STEAL");
             return Collections.EMPTY_LIST;
         }
         List<List<Thing>> currentLine = null;
@@ -53,11 +56,11 @@ public class SelectionThing4Backpack {
                 } else {
                     thisCell.addAll(sumOf_thisTh_and_free);
                 }
-                 //System.out.print(thisCell + "\t");
+                logger.debug(thisCell + "\t");
             }
-            //System.out.println(currentLine.get(COLUMNS-1));
+            logger.debug(currentLine.get(COLUMNS-1));
         }
-        //System.out.println();
+        logger.debug(System.lineSeparator());
 
         List<Thing> cell = currentLine.get(COLUMNS-1);
         if(cell.isEmpty()) {  return Collections.EMPTY_LIST;}

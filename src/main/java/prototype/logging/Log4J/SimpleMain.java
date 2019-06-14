@@ -1,4 +1,4 @@
-package prototype.other.logging.Log4J;
+package prototype.logging.Log4J;
 // NO WRITE IN FILE !!!!
 import org.apache.log4j.Logger;
 //�������� ��� ������������ � ���� log4j.xml, ������� ������� � ������ ����� src.

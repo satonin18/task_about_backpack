@@ -9,7 +9,7 @@
 5) Минимальный уровень логирования выставить в WARN.
 Отредактируй файл log4j.properties в соответствии с предоставленными требованиями.
 */
-package prototype.other.logging._propetiesLog;
+package prototype.logging._propetiesLog;
 
 //http://www.skipy.ru/useful/logging.html#log4j_fa
 // org.apache.log4j.FileAppender. Как нетрудно доогадаться, этот аппендер добавляет данные в файл.

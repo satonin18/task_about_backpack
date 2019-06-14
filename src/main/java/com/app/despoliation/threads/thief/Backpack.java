@@ -1,11 +1,14 @@
 package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Thing;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Backpack  {
+    private static final Logger logger = Logger.getLogger(Backpack.class); //String Full-Name
+
     private List<Thing> things = new ArrayList<>();
     private int weightLimit;
     private int thisWeight = 0;

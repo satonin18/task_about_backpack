@@ -1,5 +1,7 @@
 package com.app.despoliation;
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
@@ -8,6 +10,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //it is ONLY 1 static object
 public class Flat {
+    private static final Logger logger = Logger.getLogger(Flat.class); //String Full-Name
+
     private static Flat thisFlat = new Flat();
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
     private static final Lock Lock4owner = lock.readLock();
@@ -33,7 +37,7 @@ public class Flat {
 
     public void add(Thing thing) {
         this.things.add(thing);
-        //System.out.println("    Flat: add"+thing);
+        logger.debug("    Flat: add"+thing);
     }
 
     public void addAll(List<Thing> things) {
@@ -41,14 +45,14 @@ public class Flat {
     }
 
     public List<Thing> getAll() {
-        //System.out.println("    Flat: getAll");
-        //for (Thing th : things) { System.out.println("    "+th); }
+        logger.debug("    Flat: getAll");
+        logger.debug("    "+things);
         return things;
     }
 
     public void removeAll(List<Thing> findedThief) {
-        //System.out.println("    Flat: removeAll");
-        //for (Thing th : findedThief) { System.out.println("    "+th); }
+        logger.debug("    Flat: removeAll");
+        logger.debug("    "+findedThief);
         things.removeAll(findedThief);
     }
 

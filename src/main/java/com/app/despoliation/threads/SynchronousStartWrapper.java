@@ -1,12 +1,15 @@
 package com.app.despoliation.threads;
 
 import com.app.despoliation.Main;
+import org.apache.log4j.Logger;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
 //todo generic set after
 public class SynchronousStartWrapper  implements Callable<Object> {
+    private static final Logger logger = Logger.getLogger(SynchronousStartWrapper.class); //String Full-Name
+
     private Callable<Object> callable;
     private static int count; //no volatile, use synchronized
 
@@ -24,18 +27,18 @@ public class SynchronousStartWrapper  implements Callable<Object> {
         // BAD ORDER
 //        synchronized (SynchronousStartWrapper.class){
 //            count++;
-//            System.out.println(count);
+//            logger.debug(count);
 //
 //            if(count == Main.NUMBER_THREADS){
-//                System.out.println("*-*-*-*--*-*---*-*--*-**-**-*-*-*");
+//                logger.debug("*-*-*-*--*-*---*-*--*-**-**-*-*-*");
 //                SynchronousStartWrapper.class.notifyAll();
-//                System.out.println("I say everybody, notifyAll");
+//                logger.debug("I say everybody, notifyAll");
 //
 //            }else {
 //                while (count != Main.NUMBER_THREADS){
-//                    System.out.println("wait");
+//                    logger.debug("wait");
 //                    SynchronousStartWrapper.class.wait();
-//                    System.out.println("after wait");
+//                    logger.debug("after wait");
 //
 //                }
 //            }

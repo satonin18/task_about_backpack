@@ -2,6 +2,7 @@ package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Flat;
 import com.app.despoliation.Thing;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -9,6 +10,8 @@ import java.util.concurrent.Callable;
 import static com.app.despoliation.Flat.getApartment;
 
 public class Thief implements Callable<Object> {
+    private static final Logger logger = Logger.getLogger(Thief.class); //String Full-Name
+
     private Backpack backpack;
 
     public Thief(Backpack backpack) {
@@ -27,35 +30,34 @@ public class Thief implements Callable<Object> {
     public Object call() throws Exception {
         try{
             Flat.getLock4thief().lock();
-            System.out.println("--> Thief with name="+Thread.currentThread().getName());
-            //System.out.println("    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
+            logger.info("--> Thief with name="+Thread.currentThread().getName());
+            logger.debug("    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
 
             List<Thing> finded = findOptimalThings4Backpack( getApartment().getAll() );
 
             if( finded.isEmpty()) {
-                //System.out.println("    "+"do not findED thing, which place in backpack");
+                logger.debug("    "+"do not findED thing, which place in backpack");
             }
             else {
-                //System.out.println();
-                //System.out.println("Thief stole next things: ");
-                //for (Thing th : finded) { System.out.println("    "+th);}
+                logger.debug("Thief stole next things: ");
+                logger.debug("    "+finded);
 
                 boolean addedThings = backpack.tryAddAll(finded);
                 assert ( ! addedThings ) : "logic separated in  backpack and thief";
 
-                //System.out.println(addedThings);
-                //System.out.println(backpack.size());
+                logger.debug(addedThings);
+                logger.debug(backpack.size());
 
                 getApartment().removeAll(finded);
             }
         } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
-            System.out.println("<-- Thief with name="+Thread.currentThread().getName());
+            logger.info("<-- Thief with name="+Thread.currentThread().getName());
             Flat.getLock4thief().unlock();
         }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }
 

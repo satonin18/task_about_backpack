@@ -4,6 +4,7 @@ import com.app.despoliation.threads.thief.Backpack;
 import com.app.despoliation.threads.thief.Thief;
 import com.app.despoliation.threads.owner.Owner;
 import com.app.despoliation.threads.SynchronousStartWrapper;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
+    private static final Logger logger = Logger.getLogger(Main.class); //String Full-Name
+
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
 
     static final int NUMBER_OWNERS = 10;
@@ -48,7 +51,7 @@ public class Main {
         List<Future<Object>> futures = service.invokeAll(listWrappers);
         service.shutdown();
 
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+        logger.info("++++++++++++++++++++++++++++++++++++++++++++++");
         printTotalThingsAfterRun();
     }
 
@@ -77,43 +80,42 @@ public class Main {
         int totalThingsAfterRun = 0;
         int tempCount =0;
 
-        System.out.println();
-        System.out.println("RESULT APP:");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("Owner things :");
+        logger.info("RESULT APP:");
+        logger.info("----------------------------------------------------------");
+        logger.info("Owner things :");
 
         for (Owner owner: listOwner) {
             tempCount += owner.getThings().size();
-            System.out.println(owner.getThings().size()
+            logger.info(owner.getThings().size()
                     +" "+owner.getThings());
         }
-        System.out.println("=>Total owner things: "+tempCount);
+        logger.info("=>Total owner things: "+tempCount);
 
         totalThingsAfterRun += tempCount;
         tempCount=0;
 
-        System.out.println("----------------------------------------------------------");
-        System.out.println("Thing in Backpack Thiefs:");
+        logger.info("----------------------------------------------------------");
+        logger.info("Thing in Backpack Thiefs:");
         for (Thief thief: listThief) {
             tempCount += thief.getBackpack().getThings().size();
-            System.out.println(thief.getBackpack().getThings().size()
+            logger.info(thief.getBackpack().getThings().size()
                     +" "+thief.getBackpack().getThings());
         }
-        System.out.println("=>Total in Backpack Thiefs: "+tempCount);
+        logger.info("=>Total in Backpack Thiefs: "+tempCount);
 
         totalThingsAfterRun += tempCount;
         //tempCount=0;
 
-        System.out.println("----------------------------------------------------------");
-        System.out.println("=>Thing in Flat: "+ Flat.getApartment().size());
+        logger.info("----------------------------------------------------------");
+        logger.info("=>Thing in Flat: "+ Flat.getApartment().size());
 
         totalThingsAfterRun += Flat.getApartment().size();
 
         assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
 
-        System.out.println("----------------------------------------------------------");
-        System.out.println("Things were: "+TOTAL_THINGS_IN_APP);
-        System.out.println("New, total: "+totalThingsAfterRun);
+        logger.info("----------------------------------------------------------");
+        logger.info("Things were: "+TOTAL_THINGS_IN_APP);
+        logger.info("New, total: "+totalThingsAfterRun);
     }
 
 }

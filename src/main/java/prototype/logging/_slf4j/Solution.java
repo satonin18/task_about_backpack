@@ -21,7 +21,7 @@ trace - 4 раза - используй для отслеживания пути
 4. Добавь логирование уровня trace четыре раза.
 */
 
-package prototype.other.logging._slf4j;
+package prototype.logging._slf4j;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
