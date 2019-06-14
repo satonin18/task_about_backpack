@@ -2,7 +2,8 @@ package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Flat;
 import com.app.despoliation.Thing;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.concurrent.Callable;
 import static com.app.despoliation.Flat.getApartment;
 
 public class Thief implements Callable<Object> {
-    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private Backpack backpack;
 

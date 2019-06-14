@@ -1,7 +1,8 @@
 package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Thing;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
  *
  */
 public class SelectionThing4Backpack {
-    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     public static List<Thing> select(int maxLimitedThing, List<Thing> things) {
         final int COLUMNS = maxLimitedThing;  // COLUMNS = from 0 to WEIGHT-1

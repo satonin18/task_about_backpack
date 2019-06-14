@@ -4,7 +4,10 @@ import com.app.despoliation.threads.thief.Backpack;
 import com.app.despoliation.threads.thief.Thief;
 import com.app.despoliation.threads.owner.Owner;
 import com.app.despoliation.threads.SynchronousStartWrapper;
-import org.apache.log4j.Logger;
+
+//import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -13,7 +16,8 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class Main {
-    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
+    //private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     static final int NUMBER_THINGS_ON_ONE_OWNER = 10;
 

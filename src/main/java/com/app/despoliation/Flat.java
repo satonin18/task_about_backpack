@@ -1,6 +1,7 @@
 package com.app.despoliation;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -11,7 +12,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //it is ONLY 1 static object
 public class Flat {
-    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass()); //String Full-Name
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private static Flat thisFlat = new Flat();
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
