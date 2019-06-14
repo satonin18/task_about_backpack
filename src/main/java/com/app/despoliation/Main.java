@@ -25,51 +25,28 @@ public class Main {
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
 
-    private static int NUMBER_THINGS_ON_ONE_OWNER; // for test =Integer.MAX_VALUE
+    private static int numberThingsOnOneOwner;
 
-    private static int NUMBER_OWNERS;
-    private static int NUMBER_THIEFS;
+    private static int numberOwners;
+    private static int numberThiefs;
 
-    private static int RANGE_PRICE_THING;
-    private static int RANGE_PRICE_WEIGHT;
-    private static int RANGE_BACKPACK_LIMIT_WEIGHT;
+    private static int rangePriceThings;
+    private static int rangeWeightThings;
+    private static int rangeBackpackLimitWeight;
 
-    static {
-        try {
-            initConstFromProperties();
+    private static int numberThreads;
+    private static long totalThingsInApp;
 
-        } catch (IOException e) {
-            log.log(Level.ERROR, e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-    private static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
-    private static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
+    static List<Thing> listThings_onStartApp = new ArrayList<>((int) totalThingsInApp);
+    static List<Thing> listThings_onEndApp = new ArrayList<>((int) totalThingsInApp);
 
-    private static void initConstFromProperties() throws IOException {
-        Properties props = new Properties();
-        try (InputStream is = new FileInputStream(new File(PATH_TO_PROPERTIES))) {
-            props.load(is);
-
-            NUMBER_THINGS_ON_ONE_OWNER = Integer.parseInt(props.getProperty("NUMBER_THINGS_ON_ONE_OWNER")); // for test =Integer.MAX_VALUE
-
-            NUMBER_OWNERS = Integer.parseInt(props.getProperty("NUMBER_OWNERS"));
-            NUMBER_THIEFS = Integer.parseInt(props.getProperty("NUMBER_THIEFS"));
-
-            RANGE_PRICE_THING = Integer.parseInt(props.getProperty("RANGE_PRICE_THING"));
-            RANGE_PRICE_WEIGHT = Integer.parseInt(props.getProperty("RANGE_PRICE_WEIGHT"));
-            RANGE_BACKPACK_LIMIT_WEIGHT = Integer.parseInt(props.getProperty("RANGE_BACKPACK_LIMIT_WEIGHT"));
-        }
-    }
-
-    static List<Thing> listThings_onStartApp = new ArrayList<>((int)TOTAL_THINGS_IN_APP);
-    static List<Thing> listThings_onEndApp = new ArrayList<>((int)TOTAL_THINGS_IN_APP);
-
-    private static List<Owner> listOwner = new ArrayList<>(NUMBER_OWNERS);
-    private static List<Thief> listThief = new ArrayList<>(NUMBER_THIEFS);
-    public static CountDownLatch countDownLatch = new CountDownLatch(NUMBER_THREADS);
+    private static List<Owner> listOwner = new ArrayList<>(numberOwners);
+    private static List<Thief> listThief = new ArrayList<>(numberThiefs);
+    public static CountDownLatch countDownLatch = new CountDownLatch(numberThreads);
 
     public static void main(String[] args) throws InterruptedException {
+        initVar();
+
         initLists();
 
         List<Callable<Object>> listCallable = getWrapperList(); // getShuffledList()
@@ -84,8 +61,34 @@ public class Main {
         checkEqualsAllThing();
     }
 
+    public static void initVar() {
+        initVarFromProperties();
+
+        numberThreads = numberOwners + numberThiefs;
+        totalThingsInApp = numberOwners * numberThingsOnOneOwner;
+    }
+
+    private static void initVarFromProperties(){
+        Properties props = new Properties();
+        try (InputStream is = new FileInputStream(new File(PATH_TO_PROPERTIES))) {
+            props.load(is);
+
+            numberThingsOnOneOwner = Integer.parseInt(props.getProperty("numberThingsOnOneOwner", "5")); // for test =Integer.MAX_VALUE
+
+            numberOwners = Integer.parseInt(props.getProperty("numberOwners", "5"));
+            numberThiefs = Integer.parseInt(props.getProperty("numberThiefs", "5"));
+
+            rangePriceThings = Integer.parseInt(props.getProperty("rangePriceThings", "1000"));
+            rangeWeightThings = Integer.parseInt(props.getProperty("rangeWeightThings","20"));
+            rangeBackpackLimitWeight = Integer.parseInt(props.getProperty("rangeBackpackLimitWeight", "20"));
+        } catch (IOException e) {
+            log.log(Level.ERROR, e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     private static List<Callable<Object>> getShuffledList() {
-        List<Callable<Object>> listCallable = new ArrayList<>(NUMBER_THREADS);
+        List<Callable<Object>> listCallable = new ArrayList<>(numberThreads);
         listCallable.addAll(listThief);
         listCallable.addAll(listOwner);
         Collections.shuffle(listCallable);
@@ -93,7 +96,7 @@ public class Main {
     }
 
     private static List<Callable<Object>> getWrapperList() {
-        List<Callable<Object>> listWrappers = new ArrayList<>(NUMBER_THREADS);
+        List<Callable<Object>> listWrappers = new ArrayList<>(numberThreads);
         for (Owner owner: listOwner) {
             listWrappers.add(new SynchronousStartWrapper(owner));
         }
@@ -104,14 +107,14 @@ public class Main {
     }
 
     private static void initLists() {
-        for (int i = 0; i< NUMBER_OWNERS; i++) {
+        for (int i = 0; i< numberOwners; i++) {
             String threadName = "owner#"+i;
-            List<Thing> tempListThings = new ArrayList<>(NUMBER_THINGS_ON_ONE_OWNER);
-            for (int iThing = 0; iThing<NUMBER_THINGS_ON_ONE_OWNER; iThing++) {
+            List<Thing> tempListThings = new ArrayList<>(numberThingsOnOneOwner);
+            for (int iThing = 0; iThing< numberThingsOnOneOwner; iThing++) {
                 Thing thing = new Thing.Builder()
                         .title("thing#"+iThing+", which owns: "+threadName)
-                        .price( (int)(Math.random()*RANGE_PRICE_THING ))
-                        .weight((int)(Math.random()*RANGE_PRICE_WEIGHT))
+                        .price( (int)(Math.random()* rangePriceThings))
+                        .weight((int)(Math.random()* rangeWeightThings))
                         .build();
                 tempListThings.add(
                         thing
@@ -123,9 +126,9 @@ public class Main {
             listThings_onStartApp.addAll(tempListThings);
         }
 
-        for (int i = 0; i < NUMBER_THIEFS; i++) {
+        for (int i = 0; i < numberThiefs; i++) {
             Thief thief = new Thief(
-                    new Backpack( (int) (Math.random() * RANGE_BACKPACK_LIMIT_WEIGHT) )
+                    new Backpack( (int) (Math.random() * rangeBackpackLimitWeight) )
             );
             listThief.add(thief);
         }
@@ -168,10 +171,10 @@ public class Main {
         listThings_onEndApp.addAll(Flat.getInstance().getAll());
         totalThingsAfterRun += Flat.getInstance().size();
 
-        assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
+        assert (totalThingsAfterRun != totalThingsInApp) : "no eguals thing after and before";
 
         log.log(Level.INFO,"----------------------------------------------------------");
-        log.log(Level.INFO,"Things were: "+TOTAL_THINGS_IN_APP);
+        log.log(Level.INFO,"Things were: "+ totalThingsInApp);
         log.log(Level.INFO,"New, total: "+totalThingsAfterRun);
     }
 
