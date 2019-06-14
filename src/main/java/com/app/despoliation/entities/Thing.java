@@ -1,6 +1,4 @@
-package com.app.despoliation;
-
-import java.util.Objects;
+package com.app.despoliation.entities;
 
 public class Thing {
     private String title;

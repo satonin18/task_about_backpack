@@ -1,5 +1,7 @@
 package com.app.despoliation;
 
+import com.app.despoliation.entities.Flat;
+import com.app.despoliation.entities.Thing;
 import com.app.despoliation.threads.thief.Backpack;
 import com.app.despoliation.threads.thief.Thief;
 import com.app.despoliation.threads.owner.Owner;
@@ -56,7 +58,7 @@ public class Main {
         service.shutdown();
 
         log.log(Level.INFO,"++++++++++++++++++++++++++++++++++++++++++++++");
-        printTotalThingsAfterRun();
+        printTotalThingsAfterRun(); //util.statistics
         checkEqualsAllThing();
     }
 
@@ -139,10 +141,10 @@ public class Main {
         //tempCount=0;
 
         log.log(Level.INFO,"----------------------------------------------------------");
-        log.log(Level.INFO,"=>Thing in Flat: "+ Flat.getApartment().size());
+        log.log(Level.INFO,"=>Thing in Flat: "+ Flat.getInstance().size());
 
-        listThings_onEndApp.addAll(Flat.getApartment().getAll());
-        totalThingsAfterRun += Flat.getApartment().size();
+        listThings_onEndApp.addAll(Flat.getInstance().getAll());
+        totalThingsAfterRun += Flat.getInstance().size();
 
         assert (totalThingsAfterRun != TOTAL_THINGS_IN_APP) : "no eguals thing after and before";
 

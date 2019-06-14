@@ -1,4 +1,4 @@
-package com.app.despoliation;
+package com.app.despoliation.entities;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -11,26 +11,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-// TODO EDIT STATIC CLASS
-//it is ONLY 1 static object
-public class Flat {
+public class Flat{
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
-    private static Flat thisFlat = new Flat();
-    private static final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private static final Lock Lock4owner = lock.readLock();
-    private static final Lock Lock4thief = lock.writeLock();
-
-    public static Lock getLock4owner() {
-        return Lock4owner;
-    }
-
-    public static Lock getLock4thief() {
-        return Lock4thief;
-    }
-
-    public static Flat getApartment(){
-        return thisFlat;
+    private static Flat instance = new Flat();
+    // TODO ???
+    public static Flat getInstance(){
+        return Flat.instance;
     }
 //------------------------------------------------------------------------------
     private List<Thing> things;

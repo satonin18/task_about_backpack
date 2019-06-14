@@ -1,6 +1,6 @@
 package com.app.despoliation.threads.thief;
 
-import com.app.despoliation.Thing;
+import com.app.despoliation.entities.Thing;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

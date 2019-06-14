@@ -1,7 +1,8 @@
 package com.app.despoliation.threads.owner;
 
-import com.app.despoliation.Flat;
-import com.app.despoliation.Thing;
+import com.app.despoliation.entities.Flat;
+import com.app.despoliation.entities.Thing;
+import com.app.despoliation.util.LockUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,11 +27,11 @@ public class Owner implements Callable<Object> {
     @Override
     public Object call() throws Exception {
         try{
-            Flat.getLock4owner().lock();
+            LockUtil.getLock4owner().lock();
             logger.log(Level.INFO,"+in Owner with name=" + Thread.currentThread().getName());
 
             while ( ! things.isEmpty()) {
-                Flat.getApartment().add(
+                Flat.getInstance().add(
                         things.remove(things.size()-1)
                 );
             }
@@ -38,7 +39,7 @@ public class Owner implements Callable<Object> {
             e.printStackTrace(System.err);
         } finally {
             logger.log(Level.INFO,"-out Owner with name=" + Thread.currentThread().getName());
-            Flat.getLock4owner().unlock();
+            LockUtil.getLock4owner().unlock();
         }
         return null;
     }

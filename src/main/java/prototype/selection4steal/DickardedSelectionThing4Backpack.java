@@ -1,7 +1,7 @@
 package prototype.selection4steal;
 
 import com.app.despoliation.threads.thief.Backpack;
-import com.app.despoliation.Thing;
+import com.app.despoliation.entities.Thing;
 import com.app.despoliation.threads.thief.SelectionThing4Backpack;
 
 import java.util.ArrayList;

@@ -1,7 +1,8 @@
 package com.app.despoliation.threads.thief;
 
-import com.app.despoliation.Flat;
-import com.app.despoliation.Thing;
+import com.app.despoliation.entities.Flat;
+import com.app.despoliation.entities.Thing;
+import com.app.despoliation.util.LockUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +11,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import static com.app.despoliation.Flat.getApartment;
 
 public class Thief implements Callable<Object> {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
@@ -19,7 +19,7 @@ public class Thief implements Callable<Object> {
 
     public Thief(Backpack backpack) {
         this.backpack = backpack;
-    }
+    }//{this.value=Objects.requireNonNull(value);}
 
     public Backpack getBackpack() {
         return backpack;
@@ -28,11 +28,11 @@ public class Thief implements Callable<Object> {
     @Override
     public Object call() throws Exception {
         try{
-            Flat.getLock4thief().lock();
+            LockUtil.getLock4thief().lock();
             logger.log(Level.INFO,"--> Thief with name="+Thread.currentThread().getName());
             logger.log(Level.DEBUG,"    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
 
-            List<Thing> findedThings = findOptimalThings4Backpack( getApartment().getAll() );
+            List<Thing> findedThings = findOptimalThings4Backpack( Flat.getInstance().getAll() );
             moveThingFromFlatToBackback(findedThings);
 
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class Thief implements Callable<Object> {
             logger.log(Level.ERROR, e.getMessage());
         } finally {
             logger.log(Level.INFO,"<-- Thief with name="+Thread.currentThread().getName());
-            Flat.getLock4thief().unlock();
+            LockUtil.getLock4thief().unlock();
         }
         return null;
     }
@@ -58,7 +58,7 @@ public class Thief implements Callable<Object> {
             logger.log(Level.DEBUG,"    "+things);
         }
         backpack.addAll(things);
-        getApartment().removeAll(things);
+        Flat.getInstance().removeAll(things);
     }
 }
 
