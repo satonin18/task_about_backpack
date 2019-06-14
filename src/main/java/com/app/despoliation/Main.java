@@ -25,14 +25,14 @@ public class Main {
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     public static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
 
-    static int NUMBER_THINGS_ON_ONE_OWNER; // for test =Integer.MAX_VALUE
+    private static int NUMBER_THINGS_ON_ONE_OWNER; // for test =Integer.MAX_VALUE
 
-    static int NUMBER_OWNERS;
-    static int NUMBER_THIEFS;
+    private static int NUMBER_OWNERS;
+    private static int NUMBER_THIEFS;
 
-    static int RANGE_PRICE_THING;
-    static int RANGE_PRICE_WEIGHT;
-    static int RANGE_BACKPACK_LIMIT_WEIGHT;
+    private static int RANGE_PRICE_THING;
+    private static int RANGE_PRICE_WEIGHT;
+    private static int RANGE_BACKPACK_LIMIT_WEIGHT;
 
     static {
         try {
@@ -43,8 +43,8 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-    static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
-    static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
+    private static final int NUMBER_THREADS = NUMBER_OWNERS + NUMBER_THIEFS;
+    private static final long TOTAL_THINGS_IN_APP = NUMBER_OWNERS * NUMBER_THINGS_ON_ONE_OWNER;
 
     private static void initConstFromProperties() throws IOException {
         Properties props = new Properties();
