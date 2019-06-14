@@ -1,7 +1,6 @@
 package prototype.selection4steal;
 
 import com.app.despoliation.threads.thief.Backpack;
-import com.app.despoliation.Thing;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,15 +9,15 @@ import java.util.List;
 // TODO MAX WEIGHT IN INT VAR
 // TODO SCALA COMPUTING CAN CHANGE, take only 100 грамм
 public class Prototype1masInt {
-    static List<Thing> things;
+    static List<PrototypeThing> things;
     static Backpack backpack;
     static {
-        things = new ArrayList<Thing>(
-                Arrays.asList(new Thing[]{
-                        new Thing("guitar", 1_000, 1500),
-                        new Thing("magnetophon", 4_000, 3000),
-                        new Thing("notebook", 3_000, 2000),
-                        new Thing("iphone", 1_000, 2000),
+        things = new ArrayList<PrototypeThing>(
+                Arrays.asList(new PrototypeThing[]{
+                        new PrototypeThing("guitar", 1_000, 1500),
+                        new PrototypeThing("magnetophon", 4_000, 3000),
+                        new PrototypeThing("notebook", 3_000, 2000),
+                        new PrototypeThing("iphone", 1_000, 2000),
                 })
         );
         backpack = new Backpack(4_000);
@@ -36,7 +35,7 @@ public class Prototype1masInt {
         int[][] mas  = new int[LINES][COLUMNS];
         //ITER for FIRST------------------------------------------------------
 //        for (int indexThing = 0; indexThing < 1; indexThing++) {
-//            Thing first = things.get(indexThing);
+//            PrototypeThing first = things.get(indexThing);
 //            for (int thisColumn = 0; thisColumn < COLUMNS; thisColumn++) {
 //                int sym = 0;
 //                int biasKoffWeight = thisColumn+1;
@@ -52,7 +51,7 @@ public class Prototype1masInt {
 //        }
         //ITER for OTHER LINE---------------------------------------------------------
         for (int indexThing = 0; indexThing < LINES; indexThing++) {
-            Thing thisThis = things.get(indexThing);
+            PrototypeThing thisThis = things.get(indexThing);
             for (int thisColumn = 0; thisColumn < COLUMNS; thisColumn++) {
                 int sum = 0;
                 int biasKoffWeight = thisColumn+1;
@@ -83,12 +82,12 @@ public class Prototype1masInt {
         System.out.println(result);
         Arrays.asList();
 
-//            new ArrayList<Thing>();
+//            new ArrayList<PrototypeThing>();
 //            Collections.max();
 
 
         //TODO Algoritm WORK
-        //TODO SAFE OBJECT THING IN MASS
+        //TODO SAFE OBJECT PrototypeThing IN MASS
     }
 
 /*

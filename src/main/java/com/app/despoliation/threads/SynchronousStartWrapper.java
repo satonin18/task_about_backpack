@@ -8,12 +8,11 @@ import java.lang.invoke.MethodHandles;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 
-//todo generic set after
 public class SynchronousStartWrapper  implements Callable<Object> {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private Callable<Object> callable;
-    private static int count; //no volatile, use synchronized
+    //private static int count; //no volatile, use synchronized
 
     public SynchronousStartWrapper(Callable<Object> callable) {
         this.callable = callable;
@@ -25,8 +24,7 @@ public class SynchronousStartWrapper  implements Callable<Object> {
         Main.countDownLatch.countDown();
         Main.countDownLatch.await();
 
-        // old approach
-        // BAD ORDER
+        // old approach // BAD ORDER
 //        synchronized (SynchronousStartWrapper.class){
 //            count++;
 //            logger.log(Level.DEBUG,count);

@@ -11,6 +11,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+// TODO EDIT STATIC CLASS
 //it is ONLY 1 static object
 public class Flat {
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());

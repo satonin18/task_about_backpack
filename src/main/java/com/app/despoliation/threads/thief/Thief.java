@@ -25,10 +25,6 @@ public class Thief implements Callable<Object> {
         return backpack;
     }
 
-    private List<Thing> findOptimalThings4Backpack(List<Thing> things) {
-        return SelectionThing4Backpack.select(backpack.getWeightLimit(), things);
-    }
-
     @Override
     public Object call() throws Exception {
         try{
@@ -36,31 +32,33 @@ public class Thief implements Callable<Object> {
             logger.log(Level.INFO,"--> Thief with name="+Thread.currentThread().getName());
             logger.log(Level.DEBUG,"    "+"Max Limit Backpack: "+ backpack.getWeightLimit());
 
-            List<Thing> finded = findOptimalThings4Backpack( getApartment().getAll() );
+            List<Thing> findedThings = findOptimalThings4Backpack( getApartment().getAll() );
+            moveThingFromFlatToBackback(findedThings);
 
-            if( finded.isEmpty()) {
-                logger.log(Level.DEBUG,"    "+"do not findED thing, which place in backpack");
-            }
-            else {
-                logger.log(Level.DEBUG,"Thief stole next things: ");
-                logger.log(Level.DEBUG,"    "+finded);
-
-                boolean addedThings = backpack.tryAddAll(finded);
-                assert ( ! addedThings ) : "logic separated in  backpack and thief";
-
-                logger.log(Level.DEBUG,addedThings);
-                logger.log(Level.DEBUG,backpack.size());
-
-                getApartment().removeAll(finded);
-            }
         } catch (Exception e) {
             e.printStackTrace(System.err);
+            logger.log(Level.ERROR, e.getMessage());
         } finally {
             logger.log(Level.INFO,"<-- Thief with name="+Thread.currentThread().getName());
             Flat.getLock4thief().unlock();
         }
-
         return null;
+    }
+
+    private List<Thing> findOptimalThings4Backpack(List<Thing> things) {
+        return SelectionThing4Backpack.select(backpack.getWeightLimit(), things);
+    }
+
+    private void moveThingFromFlatToBackback(List<Thing> things) throws Exception {
+        if( things.isEmpty()) {
+            logger.log(Level.DEBUG,"    "+"do not findED thing, which place in backpack");
+        }
+        else {
+            logger.log(Level.DEBUG,"Thief stole next things: ");
+            logger.log(Level.DEBUG,"    "+things);
+        }
+        backpack.addAll(things);
+        getApartment().removeAll(things);
     }
 }
 

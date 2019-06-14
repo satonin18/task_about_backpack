@@ -1,6 +1,7 @@
 package com.app.despoliation.threads.thief;
 
 import com.app.despoliation.Thing;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,16 +28,21 @@ public class Backpack  {
         return weightLimit;
     }
 
-    public boolean tryAdd(Thing thing) {
+    public void add(Thing thing) throws Exception {
         if( thing.getWeight() <= weightLimit) {
             this.things.add(thing);
             thisWeight += thing.getWeight() ;
-            return true;
         }
-        else return false;
+        else {
+            String errorMsg = "WeightLimit exceeded!"+
+                    " thisWeight ="+thisWeight+
+                    ", thing's weight ="+thing.getWeight();
+            logger.log(Level.ERROR, errorMsg);
+            throw new Exception(errorMsg);
+        }
     }
 
-    public boolean tryAddAll(List<Thing> things) {
+    public void addAll(List<Thing> things) throws Exception {
         int weightNewThings = 0;
         for (Thing th : things) {
              weightNewThings += th.getWeight();
@@ -44,10 +50,14 @@ public class Backpack  {
         if( weightNewThings <= weightLimit) {
             this.things.addAll(things);
             thisWeight += weightNewThings;
-            return true;
         }
-        else
-            return false;
+        else {
+            String errorMsg = "WeightLimit exceeded!"+
+                    " thisWeight ="+thisWeight+
+                    ", thing's weight ="+weightNewThings;
+            logger.log(Level.ERROR, errorMsg);
+            throw new Exception(errorMsg);
+        }
     }
 
     public void removeAll() {
