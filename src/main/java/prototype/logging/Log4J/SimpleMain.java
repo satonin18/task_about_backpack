@@ -1,3 +1,4 @@
+/*
 package prototype.logging.Log4J;
 // NO WRITE IN FILE !!!!
 import org.apache.log4j.Logger;
@@ -22,4 +23,4 @@ public class SimpleMain {
         }
         return 2 / x;
     }
-}
+}*/
