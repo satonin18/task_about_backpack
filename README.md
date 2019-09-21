@@ -1,2 +1,1 @@
-# ideahello
-helloWord with maven
+task_about_backpack
